@@ -1,0 +1,80 @@
+﻿@page "/RegistroUsuario"
+@rendermode InteractiveServer
+
+<PageTitle>Registro de Usuario</PageTitle>
+
+<div class="container mt-3">
+    <FormUserURComponent _registroDTO="_registroDTO" OnSubmit="RegistrarUsuarioEvent"></FormUserURComponent>
+</div>
+
+@*
+<script>
+    $(document).ready(function () {
+        $("#Identificacion").prop("disabled", true);
+
+        $("#TipoIdentificacion").change(function () {
+            if ($(this).val() === "") {
+                $("#Identificacion").prop("disabled", true);
+            } else {
+                $("#Identificacion").prop("disabled", false);
+            }
+        });
+    });
+
+    $("form").submit(function (event) {
+        validarAlMenos3Habilidades();
+        validarIdentificacion();
+    });
+
+    function validarAlMenos3Habilidades() {
+        // Obtén la cantidad de checkboxes seleccionados
+        var selectedCount = $("[name='TestHabilidadesBlandasXusuarios']:checked").length;
+
+        // Verifica que al menos 3 checkboxes estén seleccionados
+        if (selectedCount < 3) {
+            alert("Debe seleccionar al menos 3 habilidades blandas.");
+            event.preventDefault(); // Evita que el formulario se envíe si no se cumple la validación
+        }
+    }
+
+    function validarIdentificacion() {
+        var tipoIdentificacionValue = $("#TipoIdentificacion").val();
+        var identificacionValue = $("#Identificacion").val();
+
+        var regexCedulaNacional = /^\d{9}$/;
+
+        if (tipoIdentificacionValue == "Nacional") {
+            if (!identificacionValue.match(regexCedulaNacional)) {
+                alert("La cédula Nacional debe contener exactamente 9 números.\nEjemplo de formato: 987654321");
+                event.preventDefault(); // Evitar que el formulario se envíe si la validación falla
+            }
+        }
+    }
+
+    function validarCorreoElectronico() {
+        var emailValue = $("#Email").val();
+
+        var emailRegex = @"/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/";
+
+        if (!emailValue.match(emailRegex)) {
+        alert("Formato de correo inválido");
+        event.preventDefault(); // Evitar que el formulario se envíe si la validación falla
+        }
+
+        } 
+
+    function validarTelefono() {
+        var tipoIdentificacionValue = $("#TipoIdentificacion").val();
+        var identificacionValue = $("#Identificacion").val();
+
+        var regexCedulaNacional = /^\d{8}$/;
+
+        if (tipoIdentificacionValue == "Nacional") {
+        if (!identificacionValue.match(regexCedulaNacional)) {
+        alert("");
+        event.preventDefault(); // Evitar que el formulario se envíe si la validación falla
+        }
+        }
+        } 
+</script>
+        *@

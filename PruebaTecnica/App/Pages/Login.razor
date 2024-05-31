@@ -1,0 +1,30 @@
+﻿@page "/"
+@rendermode InteractiveServer
+
+<PageTitle>Login</PageTitle>
+
+<div class="container mt-3">
+    <div class="row justify-content-md-center">
+            <div class="card p-3" style="width: 22rem;">
+                <div class="card-body my-2">
+                    <h3 class="card-title text-center">Login</h3>
+                    <EditForm Model="@_loginDTO" OnValidSubmit="LoginUser">
+                        <DataAnnotationsValidator />
+                        <div class="form-group">
+                            <label for="email" class="col-form-label">Nombre de Usuario:</label>     
+                            <InputText type="text" id="email" class="form-control" @bind-Value="_loginDTO.UserName" />
+                            <ValidationMessage For="@(() => _loginDTO.UserName)" />
+                        </div>
+                        <div class="mb-2">
+                            <label for="password" class="col-form-label">Password:</label>
+                            <InputText type="password" id="password" class="form-control" @bind-Value="_loginDTO.Password" />
+                            <ValidationMessage For="@(() => _loginDTO.Password)" />
+                        </div>
+                        <div class="d-grid">
+                            <ButtonComponent btnClasses="btn-success mt-3" btnType="submit" btnText="Login"></ButtonComponent>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+    </div>
+</div>

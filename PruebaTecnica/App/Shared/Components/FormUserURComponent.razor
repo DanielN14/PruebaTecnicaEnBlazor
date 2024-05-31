@@ -1,0 +1,161 @@
+﻿@using PruebaTecnica.App.Models.DTOs
+
+<EditForm Model="_registroDTO" OnValidSubmit="OnSubmitEvent">
+    <DataAnnotationsValidator />
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-6">
+            <div class="card p-2">
+                <div class="card-body">
+                    <div class="mb-4">
+                        <div class="form-label-group mb-3">
+                            <label for="nombre" class="col-form-label">Nombre</label>
+                            <InputText type="text" id="nombre" class="form-control" placeholder="Nombre" @bind-Value="_registroDTO.Nombre" />
+                            <ValidationMessage For="@(() => _registroDTO.Nombre)" />
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-12 col-md-6 form-label-group">
+                                <label class="form-label" for="apellido1">Primer Apellido</label>
+                                <InputText type="text" id="apellido1" class="form-control" placeholder="Primer Apellido" @bind-Value="_registroDTO.Apellido1" />
+                                <ValidationMessage For="@(() => _registroDTO.Apellido1)" />
+                            </div>
+                            <div class="col-sm-12 col-md-6 form-label-group">
+                                <label class="form-label" for="apellido2">Segundo Apellido</label>
+                                <InputText type="text" id="apellido2" class="form-control" placeholder="Segundo Apellido" @bind-Value="_registroDTO.Apellido2" />
+                                <ValidationMessage For="@(() => _registroDTO.Apellido2)" />
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-12 col-md-6 form-label-group">
+                                <label class="form-label" for="TipoIdentificacion">Tipo de Identificación</label>
+
+                                <InputSelect class="form-select" @bind-Value="_registroDTO.IdTipoIdentificacion">
+                                    <option selected disabled value="">Seleccione...</option>
+                                    @foreach (var tipoIdentificacion in CargarTipoIdentificacion())
+                                    {
+                                        <option value="@tipoIdentificacion.IdTipoIdentificacion">@tipoIdentificacion.NombreTipoIdentificacion</option>
+                                    }
+                                </InputSelect>
+                                <ValidationMessage For="@(() => _registroDTO.IdTipoIdentificacion)" />
+                            </div>
+                            <div class="col-sm-12 col-md-6 form-label-group">
+                                <label class="form-label" for="identificacion">Identificación</label>
+                                <InputText type="text" id="identificacion" class="form-control" placeholder="Identificacion" @bind-Value="_registroDTO.Identificacion" />
+                                <ValidationMessage For="@(() => _registroDTO.Identificacion)" />
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12 col-md-8 form-label-group">
+                                    <label class="form-label">Números de Teléfono</label>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-8">
+                                                <input id="nuevoTelefono" type="text" placeholder="12341234" class="form-control" @bind="nuevoTelefono" />
+                                            </div>
+                                            <div class="col-sm-12 col-md-4"><button class="btn btn-primary" type="button" onclick:preventDefault="true" @onclick="AgregarTelefono">Agregar</button></div>
+                                            @if (mostrarErrorTelefono)
+                                            {
+                                                <div class="text-danger">@mensajeErrorTelefono</div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex col-sm-12 col-md-4 form-label-group justify-content-center">
+                                    @if (telefonos.Any())
+                                    {
+                                        <ul class="p-1">
+                                            <hr />
+                                            @foreach (var telefono in telefonos)
+                                            {
+                                                <li class="my-2">
+                                                    @telefono
+                                                    <button class="btn btn-danger btn-sm" type="button" onclick:preventDefault="true" @onclick="() => EliminarTelefono(telefono)">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                                            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
+                                                        </svg>
+                                                    </button>
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-12 col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="mb-4">
+                        <div class="row mb-3">
+
+                            <div class="col-sm-12 col-md-6 form-label-group">
+                                <label class="form-label" for="email">Email</label>
+                                <InputText type="email" id="email" class="form-control" placeholder="Email" @bind-Value="_registroDTO.Email" />
+                                <ValidationMessage For="@(() => _registroDTO.Email)" />
+                            </div>
+
+                            <div class="col-sm-12 col-md-6 form-label-group">
+                                <label class="form-label" for="IdRolUsuario">Rol del usuario</label>
+
+                                <InputSelect class="form-select" @bind-Value="_registroDTO.IdRolUsuario">
+                                    <option selected disabled value="">Seleccione...</option>
+                                    @foreach (var rolUsuario in CargarRolesUsuario())
+                                    {
+                                        <option value="@rolUsuario.IdRolUsuario">@rolUsuario.NombreRol</option>
+                                    }
+                                </InputSelect>
+                                <ValidationMessage For="@(() => _registroDTO.IdRolUsuario)" />
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-sm-12 col-md-6 form-label-group">
+                                <label class="form-label" for="nombreUsuario">Nombre de Usuario</label>
+                                <InputText type="text" id="nombreUsuario" class="form-control" placeholder="Nombre de Usuario" @bind-Value="_registroDTO.NombreUsuario" />
+                                <ValidationMessage For="@(() => _registroDTO.NombreUsuario)" />
+                            </div>
+                            <div class="col-sm-12 col-md-6 form-label-group">
+                                <label class="form-label" for="clave">Contraseña</label>
+                                <InputText type="password" id="clave" class="form-control" placeholder="Contraseña" @bind-Value="_registroDTO.Password" />
+                                <ValidationMessage For="@(() => _registroDTO.Password)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="form-check-label mb-2" for="flexCheckDefault">
+                            Seleccione al menos 3 habilidades blandas
+                        </label>
+                        @foreach (var habilidadBlanda in CargarHabilidadesBlandas())
+                        {     
+                            bool isChecked = SelectedHabilidadesBlandas.Contains(habilidadBlanda.IdHabilidadBlanda);
+
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox"
+                                           name="TestHabilidadesBlandasXusuarios"
+                                           @onchange="(e) => CheckboxChangedHB(e, habilidadBlanda.IdHabilidadBlanda)"
+                                           checked="@SelectedHabilidadesBlandas.Contains(habilidadBlanda.IdHabilidadBlanda)"
+                                           id="@habilidadBlanda.IdHabilidadBlanda"
+                                           >
+                                    <label class="form-check-label" for="@habilidadBlanda.IdHabilidadBlanda">
+                                        @habilidadBlanda.NombreHabilidadBlanda
+                                    </label>
+                                </div>
+                            </div>
+                        }
+                        @if (mostrarErrorHB)
+                        {
+                            <div class="text-danger">@mensajeErrorHB</div>
+                        }
+                    </div>
+
+                    <button class="btn btn-primary w-100" type="submit">@textoBtnFormulario</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
