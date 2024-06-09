@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PruebaTecnica.App.Models.Validators;
+using System.ComponentModel.DataAnnotations;
 
 namespace PruebaTecnica.App.Models.DTOs
 {
@@ -17,6 +18,7 @@ namespace PruebaTecnica.App.Models.DTOs
         public string IdTipoIdentificacion { get; set; }
 
         [Required(ErrorMessage = "La identificación es requerida")]
+        [IdentificacionValidator]
         public string Identificacion { get; set; }
 
         [Required(ErrorMessage = "El nombre de usuario es requerido")]
@@ -27,6 +29,7 @@ namespace PruebaTecnica.App.Models.DTOs
         public string Email { get; set; }
 
         [Required(ErrorMessage = "La contraseña es requerida")]
+        [RegularExpression("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$", ErrorMessage = "La contraseña debe contener mínimo 6 caracteres que debe contener números y letras como requisito")]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "El rol del usuario es requerido")]

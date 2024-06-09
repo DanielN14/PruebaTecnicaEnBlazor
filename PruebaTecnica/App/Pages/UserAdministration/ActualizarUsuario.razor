@@ -3,6 +3,13 @@
 
 <PageTitle>Actualización de Usuario</PageTitle>
 
-<div class="container mt-3">
-    <FormUserURComponent _registroDTO="_registroDTO" OnSubmit="ActualizarUsuarioEvent"></FormUserURComponent>
-</div>
+<AuthorizeView Roles="Administrador">
+    <Authorized>
+        <div class="container mt-3">
+            <FormUserURComponent _registroDTO="_registroDTO" OnSubmit="ActualizarUsuarioEvent"></FormUserURComponent>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <h2>No tiene permisos</h2>
+    </NotAuthorized>
+</AuthorizeView>

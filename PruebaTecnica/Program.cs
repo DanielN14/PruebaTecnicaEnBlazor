@@ -1,6 +1,12 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Microsoft.AspNetCore.Identity;
 using PruebaTecnica.App;
 using PruebaTecnica.App.Database;
 using PruebaTecnica.App.Services;
+using PruebaTecnica.App.Services.Security;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,9 +16,32 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddScoped<Conexion>();
-builder.Services.AddScoped<UserAdministrationService>();
 
+builder.Services.AddScoped<Conexion>();
+
+builder.Services.AddCascadingAuthenticationState();
+
+builder.Services.AddScoped<ProtectedSessionStorage>();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationProvider>();
+builder.Services.AddAuthorizationCore();
+
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Tiempo de expiración de la sesión
+});
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Tiempo de expiración de la sesión
+        options.SlidingExpiration = true; // Renovar la sesión con cada solicitud
+        options.Cookie.HttpOnly = true; // Asegura que las cookies de sesión no sean accesibles desde el cliente
+        options.Cookie.IsEssential = true; // Necesario para que la sesión funcione incluso si el usuario no consiente el seguimiento
+    });
+
+builder.Services.AddScoped<UserAdministrationService>();
 
 
 var app = builder.Build();
@@ -28,9 +57,16 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+
+
+app.UseRouting();
+
+app.UseSession();
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.UseAntiforgery();
 
-app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 
 app.Run();

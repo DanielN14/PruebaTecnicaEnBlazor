@@ -1,10 +1,17 @@
 ﻿@page "/home"
 
-<div class="container">
-    <div class="text-center">
-        <h2>Bienvenido al sistema de registro de usuarios</h2>
-        <NavLink class="" href="/">
-            Volver al login
-        </NavLink>
-    </div>
-</div>
+<AuthorizeView Roles="Consultor">
+    <Authorized>
+        <div class="container">
+            <div class="text-center">
+                <h2>Bienvenido al sistema de registro de usuarios</h2>
+                <NavLink class="" href="/">
+                    Volver al login
+                </NavLink>
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <h2>No tiene permisos</h2>
+    </NotAuthorized>
+</AuthorizeView>

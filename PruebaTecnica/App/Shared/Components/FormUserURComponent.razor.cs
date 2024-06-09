@@ -28,8 +28,11 @@ namespace PruebaTecnica.App.Shared.Components
 
         protected override void OnInitialized()
         {
-            LlenarTelefonosUsuario();
-            MarcarHabilidadesBlandasUsuario();
+            if(_registroDTO != null)
+            {
+                if(_registroDTO.HabilidadesBlandas.Count > 0) SelectedHabilidadesBlandas = _registroDTO.HabilidadesBlandas;
+                if (_registroDTO.Telefonos.Count > 0) telefonos = _registroDTO.Telefonos;
+            }
 
             if (_registroDTO != null) textoBtnFormulario = "Actualizar Usuario";
         }
@@ -143,7 +146,7 @@ namespace PruebaTecnica.App.Shared.Components
             }
         }
     
-        public void MarcarHabilidadesBlandasUsuario()
+       /* public void MarcarHabilidadesBlandasUsuario()
         {
             if(_registroDTO.HabilidadesBlandas != null && _registroDTO.HabilidadesBlandas.Count > 0)
             {
@@ -152,9 +155,9 @@ namespace PruebaTecnica.App.Shared.Components
                     SelectedHabilidadesBlandas.Add(habilidadBlanda);
                 }
             }
-        }
+        }*/
 
-        public void LlenarTelefonosUsuario()
+        /*public void LlenarTelefonosUsuario()
         {
             if (_registroDTO.Telefonos != null && _registroDTO.Telefonos.Count > 0)
             {
@@ -163,6 +166,6 @@ namespace PruebaTecnica.App.Shared.Components
                     telefonos.Add(telefono);
                 }
             }
-        }
+        }*/
     }
 }

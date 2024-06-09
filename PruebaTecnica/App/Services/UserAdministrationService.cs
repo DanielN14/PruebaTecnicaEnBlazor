@@ -31,6 +31,21 @@ public class UserAdministrationService
         }
     }
 
+    public object ActualizarUsuario(int idUsuario, RegistroDTO data)
+    {
+        try
+        {
+            SqlParameter[] parametros = PametrosActualizarUsuario(idUsuario, data);
+            object resultado = _conexion.GetScalar("ActualizarUsuario", parametros);
+
+            return resultado;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
     public List<Usuario> EliminarUsuario(int idUsuario)
     {
         try
@@ -81,6 +96,38 @@ public class UserAdministrationService
         return parametros.ToArray();
     }
 
+    public SqlParameter[] PametrosActualizarUsuario(int idusuario, RegistroDTO data)
+    {
+        List<SqlParameter> parametros = new List<SqlParameter>();
+
+        parametros.Add(new SqlParameter("@IdUsuario", SqlDbType.Int) { Value = idusuario });
+        parametros.Add(new SqlParameter("@Nombre", SqlDbType.VarChar, 50) { Value = data.Nombre });
+        parametros.Add(new SqlParameter("@PrimerApellido", SqlDbType.VarChar, 50) { Value = data.Apellido1 });
+        parametros.Add(new SqlParameter("@SegundoApellido", SqlDbType.VarChar, 50) { Value = data.Apellido2 });
+        parametros.Add(new SqlParameter("@IdTipoIdentificacion", SqlDbType.Int) { Value = data.IdTipoIdentificacion });
+        parametros.Add(new SqlParameter("@Identificacion", SqlDbType.VarChar, 20) { Value = data.Identificacion });
+        parametros.Add(new SqlParameter("@NombreUsuario", SqlDbType.VarChar, 30) { Value = data.NombreUsuario });
+        parametros.Add(new SqlParameter("@Clave", SqlDbType.VarChar, 20) { Value = data.Password });
+        parametros.Add(new SqlParameter("@CorreoElectronico", SqlDbType.VarChar, 100) { Value = data.Email });
+        parametros.Add(new SqlParameter("@IdRolUsuario", SqlDbType.Int) { Value = data.IdRolUsuario });
+
+        SqlParameter telefonosParam = new SqlParameter("@Telefonos", SqlDbType.Structured)
+        {
+            TypeName = "dbo.Telefonos",
+            Value = ConvertirTelefonosListToDataTable(data.Telefonos)
+        };
+        parametros.Add(telefonosParam);
+
+        SqlParameter habilidadesBlandasParam = new SqlParameter("@HabilidadesBlandas", SqlDbType.Structured)
+        {
+            TypeName = "dbo.HabilidadesBlandas",
+            Value = ConvertirHabilidadesBlandasListToDataTable(data.HabilidadesBlandas)
+        };
+
+        parametros.Add(habilidadesBlandasParam);
+
+        return parametros.ToArray();
+    }
 
 
     #region ConversionData
