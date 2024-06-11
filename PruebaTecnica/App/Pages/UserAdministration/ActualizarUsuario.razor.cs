@@ -12,7 +12,7 @@ namespace PruebaTecnica.App.Pages.UserAdministration
     {
         [Inject] public UserAdministrationService _UserAdministration { get; set; }
         [Inject] private NavigationManager NavigationManager { get; set; }
-        [Inject] private AuthenticationStateProvider _AuthenticationProvider { get; set; }
+        //[Inject] private AuthenticationStateProvider _AuthenticationProvider { get; set; }
 
 
         private Task<AuthenticationState>? authenticationStateTask { get; set; }
@@ -23,7 +23,7 @@ namespace PruebaTecnica.App.Pages.UserAdministration
 
         protected override async Task OnInitializedAsync()
         {
-            authenticationStateTask = _AuthenticationProvider.GetAuthenticationStateAsync();
+            //authenticationStateTask = _AuthenticationProvider.GetAuthenticationStateAsync();
 
             var authState = await authenticationStateTask;
             var user = authState.User;

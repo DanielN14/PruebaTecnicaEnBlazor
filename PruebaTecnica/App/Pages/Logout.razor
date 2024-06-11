@@ -1,0 +1,12 @@
+﻿@page "/logout"
+@inject AuthService _authService
+
+<h3>Cierre de Sesión</h3>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await _authService.LogoutUserAsync();
+    }
+}

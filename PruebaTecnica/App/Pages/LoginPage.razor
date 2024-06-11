@@ -1,5 +1,4 @@
 ﻿@page "/"
-@rendermode InteractiveServer
 
 <PageTitle>Login</PageTitle>
 
@@ -8,7 +7,7 @@
             <div class="card p-3" style="width: 22rem;">
                 <div class="card-body my-2">
                     <h3 class="card-title text-center">Login</h3>
-                    <EditForm Model="@_loginDTO" OnValidSubmit="LoginUser">
+                    <EditForm Model="@_loginDTO" OnValidSubmit="LoginUser" FormName="LoginForm3">
                         <DataAnnotationsValidator />
                         <div class="form-group">
                             <label for="email" class="col-form-label">Nombre de Usuario:</label>     
